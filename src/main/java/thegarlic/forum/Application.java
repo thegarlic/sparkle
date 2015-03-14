@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import thegarlic.forum.domain.Customer;
+import thegarlic.forum.repository.CustomerRepository;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {

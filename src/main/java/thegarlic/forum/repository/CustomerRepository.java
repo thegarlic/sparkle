@@ -1,6 +1,7 @@
-package thegarlic.forum;
+package thegarlic.forum.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import thegarlic.forum.domain.Customer;
 
 import java.util.List;
 

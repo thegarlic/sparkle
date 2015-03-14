@@ -1,4 +1,4 @@
-package thegarlic.forum;
+package thegarlic.forum.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
