@@ -14,11 +14,6 @@ import thegarlic.forum.SampleWebJspApplication;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Basic integration tests for JSP application.
- *
- * @author Phillip Webb
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SampleWebJspApplication.class)
 @WebAppConfiguration

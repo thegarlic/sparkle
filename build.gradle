@@ -1,3 +1,4 @@
+//무슨 역할을 하는걸까???? -_-;;
 buildscript {
     repositories {
         mavenCentral()
@@ -12,16 +13,27 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
+//jar파일을 묶을 때 파일명.
 jar {
     baseName = 'forumWithTdd'
     version = '0.1.0'
 }
 
+//레포 위치
 repositories {
     mavenCentral()
     maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
 }
 
+sourceSets {
+    e2eTest {
+        java.srcDir file('src/e2eTest/java')
+        resources.srcDir file('src/e2eTest/resources')
+    }
+}
+
+
+//디펜던시 설정
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-tomcat")
@@ -32,4 +44,23 @@ dependencies {
     compile("com.h2database:h2")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    //통합 테스트 관련 디펜던시 추가.
+    e2eTestCompile sourceSets.main.output
+    e2eTestCompile configurations.testCompile
+    e2eTestCompile sourceSets.test.output
+    e2eTestRuntime configurations.testRuntime
+
+    //e2e 테스트에서 사용되는 디펜던시는 아래와 같이 추가함.
+    //e2eTestCompile 'commons-collections:commons-collections:3.2'
 }
+
+task e2eTest(type: Test, dependsOn: jar) {
+    group 'Verification'
+    description 'Runs the integration tests.'
+    testClassesDir = sourceSets.e2eTest.output.classesDir
+    classpath = sourceSets.e2eTest.runtimeClasspath
+    systemProperties['jar.path'] = jar.archivePath
+}
+
+check.dependsOn e2eTest
