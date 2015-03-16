@@ -1,3 +1,4 @@
+<%@ page contentType = "text/html;charset=utf-8" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -5,7 +6,7 @@
     <title></title>
 </head>
 <body>
-    <form action="/post/${postId}" method="post">
+    <form action="/post/${postId}/modify" method="post">
         <table>
             <tr>
                 <td>글번호</td>
@@ -23,13 +24,13 @@
             <tr>
                 <td>글쓴이</td>
                 <td>
-                    <input type="text" name="writer" value="${post.writer}">
+                    <input type="text" name="author" value="${post.author}">
                 </td>
             </tr>
             <tr>
                 <td>제  목</td>
                 <td>
-                    <input type="text" name="writer" value="${post.writer}">
+                    <input type="text" name="author" value="${post.title}">
                 </td>
             </tr>
             <tr>
@@ -41,14 +42,10 @@
             <tr>
                 <td colspan="2">
                     <button id="postModify">수정</button>
-                    <button id="postDelete">삭제</button>
                 </td>
             </tr>
         </table>
     </form>
 </body>
-
-<script>
-</script>
 
 </html>

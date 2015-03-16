@@ -8,6 +8,10 @@ buildscript {
     }
 }
 
+ext {
+    javaVersion='1.8'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -35,6 +39,10 @@ sourceSets {
 
 //디펜던시 설정
 dependencies {
+
+    //복잡한 getter setter는 없애버립시다.
+    compile("org.projectlombok:lombok:1.16.2")
+
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.apache.tomcat.embed:tomcat-embed-jasper")
@@ -54,8 +62,6 @@ dependencies {
     //e2e 테스트에서 사용되는 디펜던시는 아래와 같이 추가함.
     //e2eTestCompile 'commons-collections:commons-collections:3.2'
 
-    //복잡한 getter setter는 없애버립시다.
-    compile "org.projectlombok:lombok:1.16.2"
 }
 
 //태스크는 이렇게 처리합니다.
