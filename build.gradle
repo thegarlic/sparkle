@@ -53,8 +53,12 @@ dependencies {
 
     //e2e 테스트에서 사용되는 디펜던시는 아래와 같이 추가함.
     //e2eTestCompile 'commons-collections:commons-collections:3.2'
+
+    //복잡한 getter setter는 없애버립시다.
+    compile "org.projectlombok:lombok:1.16.2"
 }
 
+//태스크는 이렇게 처리합니다.
 task e2eTest(type: Test, dependsOn: jar) {
     group 'Verification'
     description 'Runs the integration tests.'
