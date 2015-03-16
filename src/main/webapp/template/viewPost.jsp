@@ -45,7 +45,8 @@
         </tr>
     </table>
 
-    <form id="postDeleteForm" action="/post/${postId}">
+    <form id="postDeleteForm" action="/post/${postId}" method="post">
+        <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" value="{postId}">
     </form>
 
