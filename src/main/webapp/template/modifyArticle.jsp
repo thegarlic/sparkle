@@ -6,43 +6,43 @@
     <title></title>
 </head>
 <body>
-    <form action="/post/${postId}/modify" method="post">
+    <form action="/article/${articleId}/modify" method="post">
         <input type="hidden" name="_method" value="PUT">
         <table>
             <tr>
                 <td>글번호</td>
                 <td>
-                ${post.id}
-                    <input type="hidden" name="id" value="${post.id}">
+                ${article.id}
+                    <input type="hidden" name="id" value="${article.id}">
                 </td>
             </tr>
             <tr>
                 <td>시  간</td>
                 <td>
-                    ${post.writeDate}
+                    ${article.writeDate}
                 </td>
             </tr>
             <tr>
                 <td>글쓴이</td>
                 <td>
-                    <input type="text" name="author" value="${post.author}">
+                    <input type="text" name="author" value="${article.author}">
                 </td>
             </tr>
             <tr>
                 <td>제  목</td>
                 <td>
-                    <input type="text" name="title" value="${post.title}">
+                    <input type="text" name="title" value="${article.title}">
                 </td>
             </tr>
             <tr>
                 <td>본  문</td>
                 <td>
-                    <textarea rows="4" cols="50" name="text">${post.text}</textarea>
+                    <textarea rows="4" cols="50" name="text">${article.text}</textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button id="postModify">수정</button>
+                    <button id="articleModify">수정</button>
                 </td>
             </tr>
         </table>

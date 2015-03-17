@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-    <form action="/post" method="post">
+    <form action="/article" method="post">
         <table>
             <tr>
                 <td>글쓴이</td>
@@ -23,7 +23,7 @@
             <tr>
                 <td>본  문</td>
                 <td>
-                    <textarea rows="4" cols="50" name="text">${post.text}</textarea>
+                    <textarea rows="4" cols="50" name="text">${article.text}</textarea>
                 </td>
             </tr>
             <tr>

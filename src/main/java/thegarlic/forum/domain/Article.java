@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
-public class Post {
+public class Article {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
@@ -22,7 +22,7 @@ public class Post {
     private String text;
 
 
-    public Post(Date writeDate, String author, String title, String text) {
+    public Article(Date writeDate, String author, String title, String text) {
         this.author = author;
         this.writeDate = writeDate;
         this.title = title;
