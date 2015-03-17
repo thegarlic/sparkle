@@ -45,7 +45,7 @@
         </tr>
     </table>
 
-    <form id="articleDeleteForm" action="/article/${articleId}" method="article">
+    <form id="articleDeleteForm" action="/article/${articleId}" method="post">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" value="{articleId}">
     </form>
