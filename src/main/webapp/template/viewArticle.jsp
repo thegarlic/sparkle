@@ -28,7 +28,7 @@
         <tr>
             <td>제  목</td>
             <td>
-                ${article.author}
+                ${article.title}
             </td>
         </tr>
         <tr>

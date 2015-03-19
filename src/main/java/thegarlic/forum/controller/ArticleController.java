@@ -41,7 +41,7 @@ public class ArticleController {
     @RequestMapping(value = "/article/{articleId}", method = RequestMethod.DELETE)
     public String deleteArticle(@PathVariable long articleId) {
         articleRepository.delete(articleId);
-        return "redirect:/Article";
+        return "redirect:/article";
     }
 
     @RequestMapping(value = "/article/{articleId}/modify", method = RequestMethod.GET)
