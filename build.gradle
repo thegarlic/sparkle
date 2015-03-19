@@ -19,7 +19,7 @@ apply plugin: 'spring-boot'
 
 //jar파일을 묶을 때 파일명.
 jar {
-    baseName = 'forumWithTdd'
+    baseName = 'sparkle'
     version = '0.1.0'
 }
 
