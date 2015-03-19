@@ -10,17 +10,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public abstract class AbstractConfig {
 
-	@Bean
-	protected abstract String getMode();
-	
+
     @Bean
-    protected CommandLineRunner clr(String mode) {
-    	return new CommandLineRunner() {
-			
-			@Override
-			public void run(String... args) throws Exception {
-				log.debug("running mode is {} !!!", mode);
-			}
-		};
+    protected abstract String getMode();
+
+    @Bean
+    protected CommandLineRunner clr(final String mode) {
+        return new CommandLineRunner() {
+
+            @Override
+            public void run(String... args) throws Exception {
+                log.debug("running mode is {} !!!", mode);
+            }
+        };
     }
 }
