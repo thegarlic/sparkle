@@ -26,7 +26,6 @@ jar {
 //레포 위치
 repositories {
     mavenCentral()
-    maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
 }
 
 //디펜던시 설정
@@ -43,5 +42,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("com.h2database:h2")
 
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile("com.google.guava:guava:18.0");
+
+    testCompile("org.springframework.boot:spring-boot-starter-test");
 }
