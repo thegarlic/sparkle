@@ -43,6 +43,9 @@ dependencies {
     compile("com.h2database:h2")
 
     compile("com.google.guava:guava:18.0");
+    
+    compile("joda-time:joda-time:2.7")
+    compile("org.jadira.usertype:usertype.core:3.2.0.GA")
 
     testCompile("org.springframework.boot:spring-boot-starter-test");
 }

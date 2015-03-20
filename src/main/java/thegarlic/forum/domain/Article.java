@@ -1,28 +1,37 @@
 package thegarlic.forum.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.TypeDef;
+import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
+import org.joda.time.LocalDateTime;
+
+import thegarlic.forum.Const;
 
 @Data
 @Entity
 @NoArgsConstructor
+@TypeDef(defaultForType = LocalDateTime.class, typeClass = PersistentLocalDateTime.class)
 public class Article {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-    private Date writeDate;
+    private LocalDateTime writeDate;
     private String author;
     private String title;
     private String text;
-
-
-    public Article(Date writeDate, String author, String title, String text) {
+    
+    public String getWriteDateString() {
+        return writeDate.toString(Const.DATE_TIME_PATTERN);
+    }
+    
+    public Article(LocalDateTime writeDate, String author, String title, String text) {
         this.author = author;
         this.writeDate = writeDate;
         this.title = title;

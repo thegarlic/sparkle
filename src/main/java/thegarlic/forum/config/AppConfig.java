@@ -1,14 +1,15 @@
 package thegarlic.forum.config;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.joda.time.LocalDateTime;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
 import thegarlic.forum.domain.Article;
 import thegarlic.forum.repository.ArticleRepository;
-
-import java.util.Date;
 
 @Slf4j
 @Component
@@ -22,12 +23,14 @@ public class AppConfig extends AbstractConfig {
 
     @Bean
     CommandLineRunner addTestData(final ArticleRepository r) {
-        log.debug("addTestData");
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                Article a = new Article(new Date(), "author", "title", "text");
-                r.save(a);
+                
+                r.save(new Article(LocalDateTime.now(), "윤재철", "안녕하세요1", "반갑습니다1."));
+                r.save(new Article(LocalDateTime.now(), "윤재철", "안녕하세요2", "반갑습니다2."));
+                r.save(new Article(LocalDateTime.now(), "윤재철", "안녕하세요3", "반갑습니다3."));
+                r.save(new Article(LocalDateTime.now(), "윤재철", "안녕하세요4", "반갑습니다4."));
             }
         };
     }
