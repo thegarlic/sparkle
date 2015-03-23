@@ -5,7 +5,6 @@ import com.google.common.collect.Iterators;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,6 @@ import thegarlic.forum.config.TestContextInitializer;
 import thegarlic.forum.domain.Article;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -92,11 +90,11 @@ public class ArticleRepositoryTest {
     public void setDummyArticles() {
         dummyArticles = new ArrayList<Article>();
 
-        dummyArticles.add(new Article(LocalDateTime.now(), "writer0", "title0", "text0"));
-        dummyArticles.add(new Article(LocalDateTime.now(), "writer1", "title1", "text1"));
-        dummyArticles.add(new Article(LocalDateTime.now(), "writer2", "title2", "text2"));
-        dummyArticles.add(new Article(LocalDateTime.now(), "writer3", "title3", "text3"));
-        dummyArticles.add(new Article(LocalDateTime.now(), "writer4", "title4", "text4"));
+        dummyArticles.add(new Article("writer0", "title0", "text0"));
+        dummyArticles.add(new Article("writer1", "title1", "text1"));
+        dummyArticles.add(new Article("writer2", "title2", "text2"));
+        dummyArticles.add(new Article("writer3", "title3", "text3"));
+        dummyArticles.add(new Article("writer4", "title4", "text4"));
     }
 
 
