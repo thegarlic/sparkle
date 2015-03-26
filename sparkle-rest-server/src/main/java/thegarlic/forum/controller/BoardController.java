@@ -1,5 +1,7 @@
 package thegarlic.forum.controller;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import thegarlic.forum.Const;
+import thegarlic.forum.controller.response.Response;
 import thegarlic.forum.domain.Article;
 import thegarlic.forum.domain.Board;
 import thegarlic.forum.exception.DefaultException;
 import thegarlic.forum.repository.ArticleRepository;
 import thegarlic.forum.repository.BoardRepository;
 
+@Slf4j
 @RestController
 @RequestMapping("{boardName}")
 public class BoardController {
@@ -36,6 +40,7 @@ public class BoardController {
 		
 		Board board = boardRepository.findByBoardName(boardName);
 		if(board == null) {
+		    log.debug("{} 게시판 조회 실패! exception 발생", boardName);
 			throw new DefaultException(String.format("[%s] 게시판을 찾을 수 없습니다.", boardName));
 		}
 		
@@ -44,7 +49,7 @@ public class BoardController {
 		PageRequest pageRequest = new PageRequest(page, size);
 		
 		Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
-		return new ResponseEntity<>(articles, HttpStatus.OK);
+		return Response.of(articles);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
