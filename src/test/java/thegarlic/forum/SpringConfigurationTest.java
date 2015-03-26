@@ -12,12 +12,12 @@ import static org.junit.Assert.assertEquals;
 @RunWith(value = SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class, initializers = TestContextInitializer.class)
 public class SpringConfigurationTest {
-	
-	@Autowired
-	private String mode;
 
-	@Test
-	public void test() {
-		assertEquals(mode, "test");
-	}
+    @Autowired
+    private String mode;
+
+    @Test
+    public void test() {
+        assertEquals(mode, "test");
+    }
 }
