@@ -1,20 +1,13 @@
 package thegarlic.forum.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import org.hibernate.annotations.TypeDef;
 import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
 import org.joda.time.LocalDateTime;
-
 import thegarlic.forum.Const;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 
 @Data
 @Entity

@@ -2,7 +2,6 @@ package thegarlic.forum.repository;
 
 
 import com.google.common.collect.Iterators;
-
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.joda.time.LocalDateTime;
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import thegarlic.forum.Application;
 import thegarlic.forum.config.TestContextInitializer;
 import thegarlic.forum.domain.Article;
