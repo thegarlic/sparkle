@@ -1,0 +1,12 @@
+node_modules
+dist
+.tmp
+.sass-cache
+bower_components
+
+#jetbrain
+.idea
+*.iml
+
+#macos
+.DS_Store
