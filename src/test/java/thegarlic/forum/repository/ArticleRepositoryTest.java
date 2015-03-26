@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import thegarlic.forum.Application;
+import thegarlic.forum.TestConfiguration;
 import thegarlic.forum.domain.Article;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = TestConfiguration.class)
 public class ArticleRepositoryTest {
     @Autowired
     ArticleRepository articleRepository;
