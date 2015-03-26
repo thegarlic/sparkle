@@ -1,7 +1,12 @@
 package thegarlic.forum.repository;
 
 
-import com.google.common.collect.Iterators;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.joda.time.LocalDateTime;
@@ -10,19 +15,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import thegarlic.forum.Application;
-import thegarlic.forum.config.TestContextInitializer;
 import thegarlic.forum.domain.Article;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import com.google.common.collect.Iterators;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = TestContextInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@ActiveProfiles("test")
 public class ArticleRepositoryTest {
     @Autowired
     ArticleRepository articleRepository;
