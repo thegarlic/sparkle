@@ -9,6 +9,7 @@ import thegarlic.forum.domain.Board;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 	Page<Article> findByBoard(Board board, Pageable pageable);
-	Page<Article> findByBoardBoardName(String boardName, Pageable pageable);
+	Page<Article> findByBoardName(String boardName, Pageable pageable);
+	Article findByIdAndBoard(Long id, Board board);
 }
 

@@ -14,9 +14,9 @@ public class Board {
 	
 	@Id @GeneratedValue
 	private Long id;
-	private String boardName;
+	private String name;
 	
-	public Board(String boardName) {
-		this.boardName = boardName;
+	public Board(String name) {
+		this.name = name;
 	}
 }

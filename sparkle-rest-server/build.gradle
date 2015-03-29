@@ -45,5 +45,6 @@ dependencies {
     compile("joda-time:joda-time:2.7")
     compile("org.jadira.usertype:usertype.core:3.2.0.GA")
 
-    testCompile("org.springframework.boot:spring-boot-starter-test");
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("com.jayway.jsonpath:json-path")
 }

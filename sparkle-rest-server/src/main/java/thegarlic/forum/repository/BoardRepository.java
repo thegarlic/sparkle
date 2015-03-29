@@ -7,6 +7,6 @@ import thegarlic.forum.domain.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, JpaSpecificationExecutor<Board> {
 
-	Board findByBoardName(String boardName);
+	Board findByName(String name);
 
 }

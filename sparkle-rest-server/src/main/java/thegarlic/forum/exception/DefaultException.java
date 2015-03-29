@@ -14,7 +14,7 @@ public class DefaultException extends RuntimeException {
 	private HttpStatus status;
 	
 	public DefaultException(String msg) {
-		this(msg, HttpStatus.BAD_REQUEST);
+		this(msg, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	public DefaultException(String msg, HttpStatus status) {

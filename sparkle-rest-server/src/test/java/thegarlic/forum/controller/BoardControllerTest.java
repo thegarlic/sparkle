@@ -1,9 +1,9 @@
 package thegarlic.forum.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.hamcrest.Matchers.*;
 
 import java.nio.charset.Charset;
 
@@ -43,26 +43,46 @@ public class BoardControllerTest {
     private MediaType mediaType = new MediaType(
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("UTF-8"));
+    
+    private String boardName = "free";
 
     @Before
     public void before() {
         articleRepository.deleteAll();
         boardRepository.deleteAll();
 
-        Board board = boardRepository.save(new Board("free"));
-        Article article = new Article("author", "title", "text", board);
-
-        articleRepository.save(article);
-
         mvc = webAppContextSetup(wac).build();
     }
 
     @Test
     public void getArticleListTest() throws Exception {
-
-        mvc.perform(get("/free/")).andExpect(status().isOk())
-                .andExpect(content().contentType(mediaType));
-
+        
+        Board board = boardRepository.save(new Board(boardName));
+        Article article = new Article("author", "title", "text", board);
+        articleRepository.save(article);
+        
+        mvc.perform(get(String.format("/boards/%s/articles/page/1", boardName)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(mediaType))
+            .andExpect(jsonPath("$.data", is(notNullValue())))
+            .andExpect(jsonPath("$.data.content", hasSize(1)));
     }
+    
+    @Test
+    public void readArticle() throws Exception {
+        
+        Board board = boardRepository.save(new Board(boardName));
+        Article article = new Article("author", "title", "text", board);
+        articleRepository.save(article);
+        Long articleId = article.getId();
+        
+        mvc.perform(get(String.format("/boards/%s/articles/%s", boardName, articleId)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.meta.ok", is(true)))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data.id", is(articleId.intValue())));
+           
+    }
+    
     
 }
