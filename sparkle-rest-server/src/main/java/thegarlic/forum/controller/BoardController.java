@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ import thegarlic.forum.repository.BoardRepository;
 @RestController
 @RequestMapping("/boards/{boardName}/articles")
 public class BoardController {
-    
+
     @Autowired
     private ArticleRepository articleRepository;
 
@@ -46,32 +47,71 @@ public class BoardController {
         pageNumber -= 1;
         Sort sort = new Sort(sortDirection, sortOrder);
         PageRequest pageRequest = new PageRequest(pageNumber, pageSize, sort);
-
         Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
+        
         return Response.of(articles);
     }
-    
-    @RequestMapping("/{articleId}")
+
+    @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
     public ResponseEntity<?> readArticle(
-        @PathVariable("boardName") String boardName,
-        @PathVariable("articleId") Long articleId) {
-        
+            @PathVariable("boardName") String boardName,
+            @PathVariable("articleId") Long articleId) {
+
         Board board = getBoard(boardName);
-        
-        Article article = articleRepository.findByIdAndBoard(articleId, board);
-        
+        Article article = getArticle(articleId, board);
+
         return Response.of(article);
     }
+
+    @RequestMapping(value = "/write", method = RequestMethod.POST)
+    public ResponseEntity<?> writeArticleByRequestParam(
+            @PathVariable("boardName") String boardName,
+            Article param) {
+
+        Board board = getBoard(boardName);
+        param.setBoard(board);
+        Article article = articleRepository.save(param);
+
+        return Response.of(article, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{articleId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> modifyArticle(
+            @PathVariable("boardName") String boardName,
+            @PathVariable("articleId") Long articleId,
+            Article param) {
+        
+        Board board = getBoard(boardName);
+        Article article = getArticle(articleId, board);
+
+        article.setAuthor(param.getAuthor());
+        article.setTitle(param.getTitle());
+        article.setText(param.getText());
+        
+        article = articleRepository.save(article);
+        
+        return Response.of(article, HttpStatus.OK);
+    }
     
-    private Board getBoard(String boardName) {
+    private Article getArticle(Long articleId, Board board) {
+        Article article = articleRepository.findByIdAndBoard(articleId, board);
         
-        Board board = boardRepository.findByName(boardName);
-        
-        if (board == null) {
-            log.debug("{} 게시판 조회 실패! exception 발생", boardName);
-            throw new DefaultException(String.format("[%s] 게시판을 찾을 수 없습니다.", boardName));
+        if(article == null) {
+            throw new DefaultException(String.format("게시글을 찾을 수 없습니다. [ID : %d]", articleId), HttpStatus.NOT_FOUND);
         }
         
+        return article;
+    }
+
+    private Board getBoard(String boardName) {
+
+        Board board = boardRepository.findByName(boardName);
+
+        if (board == null) {
+            log.debug("{} 게시판 조회 실패! exception 발생", boardName);
+            throw new DefaultException(String.format("게시판을 찾을 수 없습니다. [boardName : %s]", boardName), HttpStatus.NOT_FOUND);
+        }
+
         return board;
     }
 }

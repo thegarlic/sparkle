@@ -1,6 +1,6 @@
 package thegarlic.forum.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.hamcrest.Matchers.*;
@@ -76,12 +76,56 @@ public class BoardControllerTest {
         articleRepository.save(article);
         Long articleId = article.getId();
         
-        mvc.perform(get(String.format("/boards/%s/articles/%s", boardName, articleId)))
+        mvc.perform(get(String.format("/boards/%s/articles/%d", boardName, articleId)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.meta.ok", is(true)))
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.id", is(articleId.intValue())));
-           
+    }
+    
+    @Test
+    public void writeArticle() throws Exception {
+        
+        boardRepository.save(new Board(boardName));
+        String author = "작성자";
+        String title = "제목";
+        String text = "내용";
+        
+        mvc.perform(post(String.format("/boards/%s/articles/write", boardName))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("author", author)
+                .param("title", title)
+                .param("text", text))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data.author", is(author)))
+            .andExpect(jsonPath("$.data.title", is(title)))
+            .andExpect(jsonPath("$.data.text", is(text)));
+    }
+    
+    @Test
+    public void modifyArticle() throws Exception {
+        
+        Board board = boardRepository.save(new Board(boardName));
+        String author = "작성자";
+        String title = "제목";
+        String text = "내용";
+        Article article = articleRepository.save(new Article(author, title, text, board));
+        
+        author += "_update";
+        title += "_update";
+        text += "_update";
+        
+        mvc.perform(put(String.format("/boards/%s/articles/%d", boardName, article.getId()))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("author", author)
+                .param("title", title)
+                .param("text", text))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data.author", is(author)))
+            .andExpect(jsonPath("$.data.title", is(title)))
+            .andExpect(jsonPath("$.data.text", is(text)));
     }
     
     
