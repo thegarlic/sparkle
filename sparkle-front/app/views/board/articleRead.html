@@ -1,19 +1,15 @@
 <div class="row">
-  <h1 class="pull-left">제목</h1>
-  <div class="pull-right"><br/><br/>수정 2015/12/12 | 작성 2015/12/12</div>
+  <h1 class="pull-left">{{article.title}}</h1>
+  <div class="pull-right"><br/><br/>수정 {{article.modifyDateString}} | 작성 {{article.writeDateString}}</div>
   <div class="clearfix"></div>
 </div>
 <div class="row">
-  <span>닉네임</span>
-  <span class="pull-right">조회수 3</span>
+  <span>{{article.author}}</span>
+  <span class="pull-right">조회수 {{article.readCount}}</span>
 </div>
 <hr/>
 <div class="row">
-  본문입니다.<br/>
-  본문입니다.<br/>
-  본문입니다.<br/>
-  본문입니다.<br/>
-  본문입니다.<br/>
+{{article.text}}
 </div>
 
 <div class="form-group text-right">

@@ -7,27 +7,27 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/boardName/page', {
-        redirectTo: 'boardName/page/1'
+      .when('/boards/:boardName/articles/page', {
+        redirectTo: '/boards/:boardName/articles/page/1'
       })
-      .when('/boardName/page/:pageNumber', {
+      .when('/boards/:boardName/articles/page/:pageNumber', {
         templateUrl: 'views/board/articlePage.html',
         controller: 'ArticlePageController'
       })
-      .when('/boardName/write', {
+      .when('/boards/:boardName/articles/write', {
         templateUrl: 'views/board/articleWrite.html',
         controller: 'ArticleWriteController'
       })
-      .when('/boardName/:articleId', {
+      .when('/boards/:boardName/articles/:articleId', {
         templateUrl: 'views/board/articleRead.html',
         controller: 'ArticleReadController'
       })
-      .when('/boardName/:articleId/edit', {
+      .when('/boards/:boardName/:articleId/edit', {
         templateUrl: 'views/board/articleEdit.html',
         controller: 'ArticleEditController'
       })
       .otherwise({
-        redirectTo: 'boardName/page/1'
+        redirectTo: '/boards/free/articles/page/1'
       });
   });
 
