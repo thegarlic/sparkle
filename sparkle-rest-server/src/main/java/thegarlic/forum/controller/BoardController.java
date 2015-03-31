@@ -58,7 +58,7 @@ public class BoardController {
             @PathVariable("articleId") Long articleId) {
 
         Board board = getBoard(boardName);
-        Article article = getArticle(articleId, board);
+        Article article = getArticleWithIncreaseReadCount(articleId, board);
 
         return Response.of(article);
     }
@@ -101,6 +101,13 @@ public class BoardController {
         }
         
         return article;
+    }
+    
+    private Article getArticleWithIncreaseReadCount(Long articleId, Board board) {
+        Article article = this.getArticle(articleId, board);
+        article.setReadCount(article.getReadCount() + 1);
+        
+        return articleRepository.save(article);
     }
 
     private Board getBoard(String boardName) {

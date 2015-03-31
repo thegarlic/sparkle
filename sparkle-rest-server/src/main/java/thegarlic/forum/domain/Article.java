@@ -18,16 +18,23 @@ public class Article {
     private long id;
     @JsonIgnore
     private LocalDateTime writeDate;
+    @JsonIgnore
+    private LocalDateTime modifyDate;
     private String author;
     private String title;
     private String text;
+    private Integer readCount = 0;
     
     @JsonIgnore
     @OneToOne
     private Board board;
     
     public String getWriteDateString() {
-        return writeDate.toString(Const.DATE_TIME_PATTERN);
+        return writeDate.toString(Const.DATE_PATTERN);
+    }
+    
+    public String getModifyDateString() {
+        return modifyDate.toString(Const.DATE_PATTERN);
     }
     
     public Article() {
