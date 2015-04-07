@@ -1,10 +1,16 @@
 package thegarlic.forum.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Data;
+import lombok.NonNull;
+
 import org.hibernate.annotations.TypeDef;
 import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
 import org.joda.time.LocalDateTime;
+
 import thegarlic.forum.Const;
 
 import javax.persistence.*;
@@ -33,8 +39,9 @@ public class Article {
         return writeDate.toString(Const.DATE_PATTERN);
     }
     
+    @JsonInclude(Include.NON_NULL)
     public String getModifyDateString() {
-        return modifyDate.toString(Const.DATE_PATTERN);
+        return modifyDate == null ? null : modifyDate.toString(Const.DATE_PATTERN);
     }
     
     public Article() {
