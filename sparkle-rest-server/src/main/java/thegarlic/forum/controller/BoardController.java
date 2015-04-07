@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,9 +67,10 @@ public class BoardController {
     @RequestMapping(value = "/write", method = RequestMethod.POST)
     public ResponseEntity<?> writeArticleByRequestParam(
             @PathVariable("boardName") String boardName,
-            Article param) {
+            @RequestBody Article param) {
 
         Board board = getBoard(boardName);
+        log.debug("bordName : {}, Article.title : {}, Article.text : {}, Article.author: {}", boardName, param.getTitle(), param.getText(), param.getAuthor());
         param.setBoard(board);
         Article article = articleRepository.save(param);
 
@@ -79,7 +81,7 @@ public class BoardController {
     public ResponseEntity<?> modifyArticle(
             @PathVariable("boardName") String boardName,
             @PathVariable("articleId") Long articleId,
-            Article param) {
+            @RequestBody Article param) {
         
         Board board = getBoard(boardName);
         Article article = getArticle(articleId, board);

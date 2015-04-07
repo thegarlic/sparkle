@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -58,10 +59,12 @@ public abstract class AbstractConfig {
             public void doFilter(ServletRequest request, ServletResponse response,
                     FilterChain chain) throws IOException, ServletException {
                 HttpServletResponse res = (HttpServletResponse)response;
+                HttpServletRequest req = (HttpServletRequest)request;
+                
                 res.setHeader("Access-Control-Allow-Origin", "*");
-                res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+                res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
                 res.setHeader("Access-Control-Max-Age", "3600");
-                res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+                res.setHeader("Access-Control-Allow-Headers", req.getHeader("Access-Control-Request-Headers"));
                 chain.doFilter(request, res);
             }
             
