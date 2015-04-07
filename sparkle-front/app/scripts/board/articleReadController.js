@@ -2,16 +2,18 @@
 
 angular.module('boardApp')
   .controller('ArticleReadController', function ($scope, $http, $routeParams) {
+
+    var articleId = $routeParams.articleId;
+    var boardName = $routeParams.boardName;
 	  
-	  var articleId = $routeParams.articleId;
-	  
-	  $http.get(server + '/boards/free/articles/' + articleId)
-	  .success(function(data, status, headers, config) {
-		  if(data.meta.ok) {
-			  $scope.article = data.data;
-		  }
-	  })
-	  .error(function(data, status, headers, config) {
-		  alert(data.meta.message);
-	  });
+    $http.get(server + '/boards/' + boardName + '/articles/' + articleId)
+      .success(function(res, status, headers, config) {
+        if(res.meta.ok) {
+          $scope.article = res.data;
+          $scope.boardName = boardName;
+        }
+      })
+      .error(function(res, status, headers, config) {
+        alert(res.meta.message);
+      });
   });

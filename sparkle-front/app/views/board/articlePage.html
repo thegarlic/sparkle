@@ -12,55 +12,33 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td class="col-md-1">1</td>
-      <td class="col-md-8">제목입니다</td>
-      <td class="col-md-1">지은이</td>
-      <td class="col-md-1">2015/12/12</td>
-    </tr>
-    <tr>
-      <td class="col-md-1">1</td>
-      <td class="col-md-8">제목입니다</td>
-      <td class="col-md-1">지은이</td>
-      <td class="col-md-1">2015/12/12</td>
-    </tr>
-    <tr>
-      <td class="col-md-1">1</td>
-      <td class="col-md-8">제목입니다</td>
-      <td class="col-md-1">지은이</td>
-      <td class="col-md-1">2015/12/12</td>
-    </tr>
-    <tr>
-      <td class="col-md-1">1</td>
-      <td class="col-md-8">제목입니다</td>
-      <td class="col-md-1">지은이</td>
-      <td class="col-md-1">2015/12/12</td>
+    <tr ng-repeat="item in list.content">
+      <td class="col-md-1">{{item.id}}</td>
+      <td class="col-md-8"><a ng-href="#/boards/{{boardName}}/articles/{{item.id}}">{{item.title}}</a></td>
+      <td class="col-md-1">{{item.author}}</td>
+      <td class="col-md-1">{{item.writeDateString}}</td>
     </tr>
     </tbody>
   </table>
 </div>
 
 <div class="row">
-  <button type="button" class="btn btn-default pull-right">
+  <a ng-href="#/boards/{{boardName}}/articles/write" class="btn btn-default pull-right">
     <span class="glyphicon glyphicon glyphicon-pencil"></span>
     글쓰기
-  </button>
+  </a>
 </div>
 <div class="row text-center">
   <nav>
     <ul class="pagination">
-      <li>
-        <a href="#" aria-label="Previous">
+      <li ng-class="{disabled : pageNumber == prevPage}">
+        <a ng-href="#/boards/{{boardName}}/articles/page/{{prevPage}}" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li>
-        <a href="#" aria-label="Next">
+      <li ng-repeat="n in [1,list.totalPages] | makeRange" ng-class="{active : pageNumber == n}"><a ng-href="#/boards/{{boardName}}/articles/page/{{n}}">{{n}}</a></li>
+      <li ng-class="{disabled : pageNumber == nextPage}">
+        <a ng-href="#/boards/{{boardName}}/articles/page/{{nextPage}}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
