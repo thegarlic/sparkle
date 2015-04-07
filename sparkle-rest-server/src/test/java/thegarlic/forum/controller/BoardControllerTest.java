@@ -45,6 +45,9 @@ public class BoardControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("UTF-8"));
     
     private String boardName = "free";
+    private String boardTitle = "자유게시판";
+    private Board freeBoard = new Board(boardName, boardTitle);
+    
 
     @Before
     public void before() {
@@ -57,7 +60,7 @@ public class BoardControllerTest {
     @Test
     public void getArticleListTest() throws Exception {
         
-        Board board = boardRepository.save(new Board(boardName));
+        Board board = boardRepository.save(freeBoard);
         Article article = new Article("author", "title", "text", board);
         articleRepository.save(article);
         
@@ -71,7 +74,7 @@ public class BoardControllerTest {
     @Test
     public void readArticle() throws Exception {
         
-        Board board = boardRepository.save(new Board(boardName));
+        Board board = boardRepository.save(freeBoard);
         Article article = new Article("author", "title", "text", board);
         articleRepository.save(article);
         Long articleId = article.getId();
@@ -86,7 +89,7 @@ public class BoardControllerTest {
     @Test
     public void writeArticle() throws Exception {
         
-        boardRepository.save(new Board(boardName));
+        boardRepository.save(freeBoard);
         String author = "작성자";
         String title = "제목";
         String text = "내용";
@@ -106,7 +109,7 @@ public class BoardControllerTest {
     @Test
     public void modifyArticle() throws Exception {
         
-        Board board = boardRepository.save(new Board(boardName));
+        Board board = boardRepository.save(freeBoard);
         String author = "작성자";
         String title = "제목";
         String text = "내용";
