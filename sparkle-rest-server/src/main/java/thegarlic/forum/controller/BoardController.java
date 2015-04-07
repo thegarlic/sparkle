@@ -38,14 +38,14 @@ public class BoardController {
     public ResponseEntity<?> getArticles(
             @PathVariable("boardName") String boardName,
             @PathVariable("pageNumber") int pageNumber,
-            @RequestParam(value = "sort.order", defaultValue = "writeDate") String sortOrder,
+            @RequestParam(value = "sort.order", defaultValue = "writeDate,id") String sortOrder,
             @RequestParam(value = "sort.direction", defaultValue = "DESC") Direction sortDirection,
             @RequestParam(value = "page.size", defaultValue = Const.ELEMENT_SIZE_PER_PAGE) int pageSize) {
 
         Board board = getBoard(boardName);
 
         pageNumber -= 1;
-        Sort sort = new Sort(sortDirection, sortOrder);
+        Sort sort = new Sort(sortDirection, sortOrder.split(","));
         PageRequest pageRequest = new PageRequest(pageNumber, pageSize, sort);
         Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
         
