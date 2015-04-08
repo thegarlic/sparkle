@@ -1,11 +1,13 @@
 package thegarlic.forum.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
-import lombok.NonNull;
 
 import org.hibernate.annotations.TypeDef;
 import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
@@ -13,7 +15,9 @@ import org.joda.time.LocalDateTime;
 
 import thegarlic.forum.Const;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Data
 @Entity
@@ -33,6 +37,7 @@ public class Article {
     
     @JsonIgnore
     @OneToOne
+    @JoinColumn(name = "boardId")
     private Board board;
     
     public String getWriteDateString() {
@@ -60,7 +65,5 @@ public class Article {
         
         this.writeDate = LocalDateTime.now();
     }
-    
-
 }
 

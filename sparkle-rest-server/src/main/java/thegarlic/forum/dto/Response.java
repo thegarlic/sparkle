@@ -1,4 +1,4 @@
-package thegarlic.forum.controller.response;
+package thegarlic.forum.dto;
 
 import lombok.Getter;
 

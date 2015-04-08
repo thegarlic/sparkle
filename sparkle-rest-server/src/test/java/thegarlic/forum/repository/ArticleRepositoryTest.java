@@ -54,7 +54,6 @@ public class ArticleRepositoryTest {
         assertThat(article, is(articleRepository.findOne(article.getId())));
 
         article.setText("changedText");
-        article.setWriteDate(LocalDateTime.now());
         article.setAuthor("changedAuthor");
         article.setTitle("changedTitle");
         

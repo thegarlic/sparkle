@@ -12,9 +12,10 @@ angular.module('boardApp')
     $http.get(server + '/boards/' + boardName + '/articles/page/' + pageNumber)
       .success(function(res, status, headers, config) {
         if(res.meta.ok) {
-          $scope.list = res.data;
-          $scope.prevPage = res.data.first ? 1 : parseInt(pageNumber, 10) - 1;
-          $scope.nextPage = res.data.last ? res.data.totalPages : parseInt(pageNumber, 10) + 1;
+          $scope.list = res.data.articles;
+          $scope.prevPage = res.data.articles.first ? 1 : parseInt(pageNumber, 10) - 1;
+          $scope.nextPage = res.data.articles.last ? res.data.articles.totalPages : parseInt(pageNumber, 10) + 1;
+          $scope.boardTitle = res.data.board.title;
         }
       })
       .error(function(res, status, headers, config) {

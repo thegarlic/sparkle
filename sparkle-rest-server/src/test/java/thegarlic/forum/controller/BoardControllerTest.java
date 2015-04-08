@@ -68,7 +68,9 @@ public class BoardControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(mediaType))
             .andExpect(jsonPath("$.data", is(notNullValue())))
-            .andExpect(jsonPath("$.data.content", hasSize(1)));
+            .andExpect(jsonPath("$.data.board.name", is(boardName)))
+            .andExpect(jsonPath("$.data.board.title", is(boardTitle)))
+            .andExpect(jsonPath("$.data.articles.content", hasSize(1)));
     }
     
     @Test
@@ -95,10 +97,8 @@ public class BoardControllerTest {
         String text = "내용";
         
         mvc.perform(post(String.format("/boards/%s/articles/write", boardName))
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("author", author)
-                .param("title", title)
-                .param("text", text))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.format("{\"title\":\"%s\", \"author\":\"%s\", \"text\": \"%s\" }", title, author, text)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.author", is(author)))
@@ -120,10 +120,8 @@ public class BoardControllerTest {
         text += "_update";
         
         mvc.perform(put(String.format("/boards/%s/articles/%d", boardName, article.getId()))
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("author", author)
-                .param("title", title)
-                .param("text", text))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.format("{\"title\":\"%s\", \"author\":\"%s\", \"text\": \"%s\" }", title, author, text)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data").exists())
             .andExpect(jsonPath("$.data.author", is(author)))

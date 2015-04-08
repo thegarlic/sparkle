@@ -1,4 +1,4 @@
-package thegarlic.forum.controller.response;
+package thegarlic.forum.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

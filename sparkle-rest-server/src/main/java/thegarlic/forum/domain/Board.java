@@ -19,5 +19,6 @@ public class Board {
 	
 	public Board(String name, String title) {
 		this.name = name;
+		this.title = title;
 	}
 }

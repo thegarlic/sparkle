@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import thegarlic.forum.Const;
-import thegarlic.forum.controller.response.Response;
 import thegarlic.forum.domain.Article;
 import thegarlic.forum.domain.Board;
+import thegarlic.forum.dto.BoardArticleDto;
+import thegarlic.forum.dto.Response;
 import thegarlic.forum.exception.DefaultException;
 import thegarlic.forum.repository.ArticleRepository;
 import thegarlic.forum.repository.BoardRepository;
@@ -50,7 +51,7 @@ public class BoardController {
         PageRequest pageRequest = new PageRequest(pageNumber, pageSize, sort);
         Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
         
-        return Response.of(articles);
+        return Response.of(new BoardArticleDto(board, articles));
     }
 
     @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
