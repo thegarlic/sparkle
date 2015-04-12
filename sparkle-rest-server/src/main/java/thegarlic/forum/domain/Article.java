@@ -1,35 +1,27 @@
 package thegarlic.forum.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
-import lombok.Data;
-
-import org.hibernate.annotations.TypeDef;
-import org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime;
-import org.joda.time.LocalDateTime;
-
-import thegarlic.forum.Const;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.Data;
+import org.hibernate.annotations.TypeDef;
+import org.jadira.usertype.dateandtime.joda.PersistentDateTime;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import javax.persistence.*;
 
 @Data
 @Entity
-@TypeDef(defaultForType = LocalDateTime.class, typeClass = PersistentLocalDateTime.class)
+@TypeDef(defaultForType = DateTime.class, typeClass = PersistentDateTime.class)
 public class Article {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     @JsonIgnore
-    private LocalDateTime writeDate;
+    private DateTime writeDate;
     @JsonIgnore
-    private LocalDateTime modifyDate;
+    private DateTime modifyDate;
     private String author;
     private String title;
     private String text;
@@ -40,13 +32,13 @@ public class Article {
     @JoinColumn(name = "boardId")
     private Board board;
     
-    public String getWriteDateString() {
-        return writeDate.toString(Const.DATE_PATTERN);
+    public String getFormattedWriteDate() {
+        return writeDate.withZone(DateTimeZone.UTC).toString();
     }
     
     @JsonInclude(Include.NON_NULL)
-    public String getModifyDateString() {
-        return modifyDate == null ? null : modifyDate.toString(Const.DATE_PATTERN);
+    public String getFormattedModifyDate() {
+        return modifyDate == null ? null : writeDate.withZone(DateTimeZone.UTC).toString();
     }
     
     public Article() {
@@ -63,7 +55,7 @@ public class Article {
         this.text = text;
         this.board = board;
         
-        this.writeDate = LocalDateTime.now();
+        this.writeDate = DateTime.now();
     }
 }
 

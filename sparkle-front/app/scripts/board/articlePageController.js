@@ -2,13 +2,13 @@
 
 angular.module('boardApp')
   .controller('ArticlePageController', function ($scope, $http, $routeParams) {
-          
+
     var pageNumber = $routeParams.pageNumber;
     var boardName = $routeParams.boardName;
-          
+
     $scope.boardName = boardName;
     $scope.pageNumber = pageNumber;
-          
+
     $http.get(server + '/boards/' + boardName + '/articles/page/' + pageNumber)
       .success(function(res, status, headers, config) {
         if(res.meta.ok) {

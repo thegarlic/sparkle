@@ -3,7 +3,8 @@
 angular
   .module('boardApp', [
     'ngResource',
-    'ngRoute'
+    'ngRoute',
+    'angularMoment'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -29,20 +30,20 @@ angular
       .otherwise({
         redirectTo: '/boards/free/articles/page/1'
       });
-  }).filter('makeRange', function() {
-    return function(input) {
+  }).filter('makeRange', function () {
+    return function (input) {
       var lowBound, highBound;
       switch (input.length) {
-      case 1:
-        lowBound = 0;
-        highBound = parseInt(input[0]) - 1;
-        break;
-      case 2:
-        lowBound = parseInt(input[0]);
-        highBound = parseInt(input[1]);
-        break;
-      default:
-        return input;
+        case 1:
+          lowBound = 0;
+          highBound = parseInt(input[0]) - 1;
+          break;
+        case 2:
+          lowBound = parseInt(input[0]);
+          highBound = parseInt(input[1]);
+          break;
+        default:
+          return input;
       }
       var result = [];
       for (var i = lowBound; i <= highBound; i++)

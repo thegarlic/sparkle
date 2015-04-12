@@ -40,17 +40,25 @@ public class BoardController {
     public ResponseEntity<?> getArticles(
             @PathVariable("boardName") String boardName,
             @PathVariable("pageNumber") int pageNumber,
-            @RequestParam(value = "sort.order", defaultValue = "writeDate,id") String sortOrder,
+            @RequestParam(value = "sort.order", defaultValue = "writeDate") String sortOrder,
             @RequestParam(value = "sort.direction", defaultValue = "DESC") Direction sortDirection,
             @RequestParam(value = "page.size", defaultValue = Const.ELEMENT_SIZE_PER_PAGE) int pageSize) {
 
         Board board = getBoard(boardName);
 
         pageNumber -= 1;
-        Sort sort = new Sort(sortDirection, sortOrder.split(","));
+
+        //정렬순서는 기본적으로 sortOrder를 우선순위로 하되, id는 항상 역순으로 배치한다.
+        Sort.Order[] orders = {
+                new Sort.Order(sortDirection, sortOrder),
+                new Sort.Order(Direction.DESC, "id")
+        };
+
+        Sort sort = new Sort(orders);
+
         PageRequest pageRequest = new PageRequest(pageNumber, pageSize, sort);
         Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
-        
+
         return Response.of(new BoardArticleDto(board, articles));
     }
 
@@ -83,33 +91,33 @@ public class BoardController {
             @PathVariable("boardName") String boardName,
             @PathVariable("articleId") Long articleId,
             @RequestBody Article param) {
-        
+
         Board board = getBoard(boardName);
         Article article = getArticle(articleId, board);
 
         article.setAuthor(param.getAuthor());
         article.setTitle(param.getTitle());
         article.setText(param.getText());
-        
+
         article = articleRepository.save(article);
-        
+
         return Response.of(article, HttpStatus.OK);
     }
-    
+
     private Article getArticle(Long articleId, Board board) {
         Article article = articleRepository.findByIdAndBoard(articleId, board);
-        
-        if(article == null) {
+
+        if (article == null) {
             throw new DefaultException(String.format("게시글을 찾을 수 없습니다. [ID : %d]", articleId), HttpStatus.NOT_FOUND);
         }
-        
+
         return article;
     }
-    
+
     private Article getArticleWithIncreaseReadCount(Long articleId, Board board) {
         Article article = this.getArticle(articleId, board);
         article.setReadCount(article.getReadCount() + 1);
-        
+
         return articleRepository.save(article);
     }
 

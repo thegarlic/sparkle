@@ -1,15 +1,10 @@
 package thegarlic.forum.repository;
 
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.collect.Iterators;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import thegarlic.forum.Application;
 import thegarlic.forum.domain.Article;
 
-import com.google.common.collect.Iterators;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -62,20 +60,21 @@ public class ArticleRepositoryTest {
         assertThat(target.getAuthor(), is(article.getAuthor()));
         assertThat(target.getTitle(), is(article.getTitle()));
         assertThat(target.getWriteDate(), isAlmostSameDate(article.getWriteDate()));
-        assertThat(target.getWriteDateString(), is(article.getWriteDateString()));
+        assertThat(target.getFormattedWriteDate(), is(article.getFormattedWriteDate()));
+
     }
 
     //database에서 저장될 경우, format이나 1000ms이하의 시간은 삭제된 채로 저장됨.
-    //때문에 아래와 같이 매쳐를 신규로 지정. 가독성을 높임.
-    public static org.hamcrest.Matcher<LocalDateTime> isAlmostSameDate(final LocalDateTime input) {
-        return new TypeSafeMatcher<LocalDateTime>() {
+    //때문에 아래와 같이 매쳐를 신규로 지정함
+    public static org.hamcrest.Matcher<DateTime> isAlmostSameDate(final DateTime input) {
+        return new TypeSafeMatcher<DateTime>() {
             @Override
             public void describeTo(Description description) {
                 description.appendText(input.toString());
             }
 
             @Override
-            protected boolean matchesSafely(LocalDateTime value) {
+            protected boolean matchesSafely(DateTime value) {
                 long result = value.getMillisOfSecond() - value.getMillisOfSecond();
                 if (result < 0) result *= 1;
 

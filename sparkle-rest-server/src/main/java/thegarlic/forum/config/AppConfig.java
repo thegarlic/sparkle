@@ -25,13 +25,12 @@ public class AppConfig extends AbstractConfig {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-            	
-            	Board board = b.save(new Board("free", "자유게시판"));
-            	
-            	Integer i = 0;
-            	while(++i < 100) {
-            	    a.save(new Article("윤재철", "안녕하세요" + i, "반갑습니다" + i, board));    
-            	}
+
+                Board board = b.save(new Board("free", "자유게시판"));
+
+                for (int i = 0; i < 100; i++) {
+                    a.save(new Article("윤재철", "안녕하세요" + i, "반갑습니다" + i, board));
+                }
             }
         };
     }

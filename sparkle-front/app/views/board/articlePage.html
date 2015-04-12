@@ -6,17 +6,19 @@
     <thead>
     <tr>
       <th class="col-md-1 text-center"></th>
-      <th class="col-md-8 text-center">제목</th>
+      <th class="col-md-7 text-center">제목</th>
       <th class="col-md-2 text-center">지은이</th>
-      <th class="col-md-1 text-center">날짜</th>
+      <th class="col-md-2 text-center">날짜</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in list.content">
       <td class="col-md-1">{{item.id}}</td>
-      <td class="col-md-8"><a ng-href="#/boards/{{boardName}}/articles/{{item.id}}">{{item.title}}</a></td>
-      <td class="col-md-1">{{item.author}}</td>
-      <td class="col-md-1">{{item.writeDateString}}</td>
+      <td class="col-md-7">
+        <a ng-href="#/boards/{{boardName}}/articles/{{item.id}}">{{item.title}}</a>
+      </td>
+      <td class="col-md-2 text-center">{{item.author}}</td>
+      <td class="col-md-2 text-center">{{item.formattedWriteDate | amCalendar}}</td>
     </tr>
     </tbody>
   </table>
@@ -36,7 +38,8 @@
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li ng-repeat="n in [1,list.totalPages] | makeRange" ng-class="{active : pageNumber == n}"><a ng-href="#/boards/{{boardName}}/articles/page/{{n}}">{{n}}</a></li>
+      <li ng-repeat="n in [1,list.totalPages] | makeRange" ng-class="{active : pageNumber == n}"><a
+        ng-href="#/boards/{{boardName}}/articles/page/{{n}}">{{n}}</a></li>
       <li ng-class="{disabled : pageNumber == nextPage}">
         <a ng-href="#/boards/{{boardName}}/articles/page/{{nextPage}}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>

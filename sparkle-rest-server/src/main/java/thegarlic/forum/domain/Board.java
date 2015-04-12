@@ -9,16 +9,17 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-@NoArgsConstructor 
+@NoArgsConstructor
 public class Board {
-	
-	@Id @GeneratedValue
-	private Long id;
-	private String name;
-	private String title;
-	
-	public Board(String name, String title) {
-		this.name = name;
-		this.title = title;
-	}
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String name;
+    private String title;
+
+    public Board(String name, String title) {
+        this.name = name;
+        this.title = title;
+    }
 }
