@@ -9,7 +9,7 @@ angular.module('boardApp')
     $scope.boardName = boardName;
     $scope.pageNumber = pageNumber;
 
-    $http.get(server + '/boards/' + boardName + '/articles/page/' + pageNumber)
+    $http.get(serverUrl + '/boards/' + boardName + '/articles/page/' + pageNumber)
       .success(function(res, status, headers, config) {
         if(res.meta.ok) {
           $scope.list = res.data.articles;

@@ -2,11 +2,11 @@
 
 angular.module('boardApp')
   .controller('ArticleEditController', function ($scope, $http, $routeParams, $location) {
-      
+
       var boardName = $routeParams.boardName;
       var articleId = $routeParams.articleId;
-      
-      $http.get(server + '/boards/' + boardName + '/articles/' + articleId)
+
+      $http.get(serverUrl + '/boards/' + boardName + '/articles/' + articleId)
         .success(function(res, status, headers, config) {
           if(res.meta.ok) {
             $scope.title = res.data.title;
@@ -16,12 +16,12 @@ angular.module('boardApp')
         })
         .error(function(res, status, headers, config) {
           alert(res.meta.message);
-        });    
-      
+        });
+
       $scope.submit = function() {
         var req = {
           method: "PUT",
-          url: server + '/boards/' + boardName + '/articles/' + articleId,
+          url: serverUrl + '/boards/' + boardName + '/articles/' + articleId,
           data: {
             id: articleId,
             title: $scope.title,
@@ -29,7 +29,7 @@ angular.module('boardApp')
             author: $scope.author
           }
         };
-        
+
         $http(req)
           .success(function(res, status, headers, config) {
             if(res.meta.ok) {

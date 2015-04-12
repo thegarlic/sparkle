@@ -1,19 +1,34 @@
-<div class="row">
-  <h1 class="pull-left">{{article.title}}</h1>
-  <div class="pull-right"><br/><br/>수정 {{article.modifyDateString}} | 작성 {{article.writeDateString}}</div>
-  <div class="clearfix"></div>
+<h1 class="pull-left">{{article.title}}</h1>
+<div class="pull-right">
+  <br/>
+  <br/>
+    <span>
+      {{article.formattedWriteDate | amCalendar}}
+    </span>
+    <span ng-if="article.formattedModifyDate">
+      <span class="label label-default">마지막 수정</span>{{article.formattedModifyDate | amCalendar}}
+    </span>
+</div>
+<div class="clearfix"/>
 </div>
 <div class="row">
-  <span>{{article.author}}</span>
-  <span class="pull-right">조회수 {{article.readCount}}</span>
+  <span>
+    <small class="text-muted">작성자</small> {{article.author}}
+  </span>
+  |
+  <span>
+    <small class="text-muted">조회수</small> {{article.readCount}}
+  </span>
 </div>
+
+
 <hr/>
 <div class="row">
-{{article.text}}
+  {{article.text}}
 </div>
 
 <div class="form-group text-right">
   <a ng-href="#/boards/{{boardName}}/articles/{{article.id}}/edit" class="btn btn-default">수정</a>
-  <a class="btn btn-default">목록</a>
+  <a ng-href="#/boards/{{boardName}}/articles" class="btn btn-default">목록</a>
 </div>
 

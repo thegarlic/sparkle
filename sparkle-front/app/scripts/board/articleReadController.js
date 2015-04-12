@@ -5,8 +5,8 @@ angular.module('boardApp')
 
     var articleId = $routeParams.articleId;
     var boardName = $routeParams.boardName;
-	  
-    $http.get(server + '/boards/' + boardName + '/articles/' + articleId)
+
+    $http.get(serverUrl + '/boards/' + boardName + '/articles/' + articleId)
       .success(function(res, status, headers, config) {
         if(res.meta.ok) {
           $scope.article = res.data;
