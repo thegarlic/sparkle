@@ -1,27 +1,29 @@
-<h1 class="pull-left">{{article.title}}</h1>
-<div class="pull-right">
-  <br/>
-  <br/>
+<div class="article-info">
+  <div class="row">
+    <h1 class="pull-left">{{article.title}}</h1>
+
+    <div class="pull-right">
+      <br/>
+      <br/>
     <span>
       {{article.formattedWriteDate | amCalendar}}
     </span>
     <span ng-if="article.formattedModifyDate">
       <span class="label label-default">마지막 수정</span>{{article.formattedModifyDate | amCalendar}}
     </span>
-</div>
-<div class="clearfix"/>
-</div>
-<div class="row">
+    </div>
+    <div class="clearfix"/>
+  </div>
+  <div class="row">
   <span>
     <small class="text-muted">작성자</small> {{article.author}}
   </span>
-  |
+    |
   <span>
     <small class="text-muted">조회수</small> {{article.readCount}}
   </span>
+  </div>
 </div>
-
-
 <hr/>
 <div class="row">
   {{article.text}}
