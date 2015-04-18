@@ -49,7 +49,7 @@ public class ArticleRepositoryTest {
 
         //TODO JPA일 경우 테스트는 어떻게 하는지 확인할 것.
         //솔직히 테스트가 무의미해 보이는데 이걸 테스트하는것은 옳은 일인가??
-        assertThat(article, is(articleRepository.findOne(article.getId())));
+        assertThat(article.getId(), is(articleRepository.findOne(article.getId()).getId()));
 
         article.setText("changedText");
         article.setAuthor("changedAuthor");
