@@ -60,7 +60,6 @@ public class ArticleRepositoryTest {
         assertThat(target.getAuthor(), is(article.getAuthor()));
         assertThat(target.getTitle(), is(article.getTitle()));
         assertThat(target.getWriteDate(), isAlmostSameDate(article.getWriteDate()));
-        assertThat(target.getFormattedWriteDate(), is(article.getFormattedWriteDate()));
 
     }
 
@@ -87,7 +86,7 @@ public class ArticleRepositoryTest {
 
     @Before
     public void setDummyArticles() {
-        dummyArticles = new ArrayList<Article>();
+        dummyArticles = new ArrayList<>();
 
         dummyArticles.add(new Article("writer0", "title0", "text0"));
         dummyArticles.add(new Article("writer1", "title1", "text1"));

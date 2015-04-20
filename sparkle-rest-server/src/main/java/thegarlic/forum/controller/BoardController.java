@@ -1,7 +1,6 @@
 package thegarlic.forum.controller;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,17 +8,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import thegarlic.forum.Const;
 import thegarlic.forum.domain.Article;
 import thegarlic.forum.domain.Board;
-import thegarlic.forum.dto.BoardArticleDto;
+import thegarlic.forum.dto.ArticlePageView;
 import thegarlic.forum.dto.Response;
 import thegarlic.forum.exception.DefaultException;
 import thegarlic.forum.repository.ArticleRepository;
@@ -59,7 +52,7 @@ public class BoardController {
         PageRequest pageRequest = new PageRequest(pageNumber, pageSize, sort);
         Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
 
-        return Response.of(new BoardArticleDto(board, articles));
+        return Response.of(new ArticlePageView(board, articles));
     }
 
     @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
@@ -107,9 +100,8 @@ public class BoardController {
     private Article getArticle(Long articleId, Board board) {
         Article article = articleRepository.findByIdAndBoard(articleId, board);
 
-        if (article == null) {
+        if (article == null)
             throw new DefaultException(String.format("게시글을 찾을 수 없습니다. [ID : %d]", articleId), HttpStatus.NOT_FOUND);
-        }
 
         return article;
     }
@@ -122,7 +114,6 @@ public class BoardController {
     }
 
     private Board getBoard(String boardName) {
-
         Board board = boardRepository.findByName(boardName);
 
         if (board == null) {
@@ -132,4 +123,5 @@ public class BoardController {
 
         return board;
     }
+
 }
