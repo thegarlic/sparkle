@@ -1,17 +1,29 @@
 package thegarlic.forum.config;
 
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Slf4j
 @Configuration
@@ -63,6 +75,20 @@ public abstract class AbstractConfig {
             @Override public void destroy() {}
             @Override public void init(FilterConfig filterConfig) throws ServletException {}
         };
+    }
+    
+    @Bean
+    private ModelMapper modelMapper() {
+        ModelMapper mapper = new ModelMapper();
+        
+        mapper.addConverter(new Converter<DateTime, String>() {
+            @Override
+            public String convert(MappingContext<DateTime, String> context) {
+                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
+            }
+        });
+        
+        return mapper;
     }
     
 }

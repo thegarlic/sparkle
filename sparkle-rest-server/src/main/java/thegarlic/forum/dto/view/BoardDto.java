@@ -3,11 +3,8 @@ package thegarlic.forum.dto.view;
 import lombok.Data;
 
 @Data
-public class Board {
+public class BoardDto {
 	private Long id;
 	private String name;
 	private String title;
-
-	public void Board() {
-	}
 }

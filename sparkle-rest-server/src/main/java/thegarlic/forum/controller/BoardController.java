@@ -1,14 +1,20 @@
 package thegarlic.forum.controller;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import thegarlic.forum.Const;
 import thegarlic.forum.domain.Article;
 import thegarlic.forum.domain.Board;
@@ -17,6 +23,7 @@ import thegarlic.forum.dto.Response;
 import thegarlic.forum.exception.DefaultException;
 import thegarlic.forum.repository.ArticleRepository;
 import thegarlic.forum.repository.BoardRepository;
+import thegarlic.forum.service.BoardServiceImpl;
 
 @Slf4j
 @RestController
@@ -28,6 +35,9 @@ public class BoardController {
 
     @Autowired
     private BoardRepository boardRepository;
+    
+    @Autowired
+    private BoardServiceImpl boardService;
 
     @RequestMapping(value = "/page/{pageNumber}", method = RequestMethod.GET)
     public ResponseEntity<?> getArticles(
@@ -37,22 +47,12 @@ public class BoardController {
             @RequestParam(value = "sort.direction", defaultValue = "DESC") Direction sortDirection,
             @RequestParam(value = "page.size", defaultValue = Const.ELEMENT_SIZE_PER_PAGE) int pageSize) {
 
-        Board board = getBoard(boardName);
+        Board board = boardService.getBoard(boardName);
+        PageRequest req = boardService.createPageReauest(pageNumber, pageSize, new Sort.Order(sortDirection, sortOrder));
+        
+        ArticlePageView articlePageView = boardService.getBoardPage(board, req);
 
-        pageNumber -= 1;
-
-        //정렬순서는 기본적으로 sortOrder를 우선순위로 하되, id는 항상 역순으로 배치한다.
-        Sort.Order[] orders = {
-                new Sort.Order(sortDirection, sortOrder),
-                new Sort.Order(Direction.DESC, "id")
-        };
-
-        Sort sort = new Sort(orders);
-
-        PageRequest pageRequest = new PageRequest(pageNumber, pageSize, sort);
-        Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
-
-        return Response.of(new ArticlePageView(board, articles));
+        return Response.of(articlePageView);
     }
 
     @RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
