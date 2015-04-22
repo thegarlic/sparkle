@@ -58,6 +58,6 @@ public class BoardServiceImpl extends BaseServiceImpl {
             })
             .collect(Collectors.toList());
         
-        return new ArticlePageView(boardDto, new PageImpl<>(articleDtoList));
+        return new ArticlePageView(boardDto, new PageImpl<>(articleDtoList, pageRequest, articles.getTotalElements()));
     }
 }
