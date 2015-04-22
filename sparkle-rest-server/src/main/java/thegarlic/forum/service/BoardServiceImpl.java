@@ -5,7 +5,12 @@ import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,9 +37,6 @@ public class BoardServiceImpl extends BaseServiceImpl {
     @Autowired
     private BoardRepository boardRepository;
     
-    @Autowired
-    private ModelMapper modelMapper;
-    
     public Board getBoard(String boardName) {
         Board board = boardRepository.findByName(boardName);
 
@@ -48,13 +50,30 @@ public class BoardServiceImpl extends BaseServiceImpl {
     
     public ArticlePageView getBoardPage(Board board, PageRequest pageRequest) {
         
+        ModelMapper mapper = new ModelMapper();
+        
+        mapper.addConverter(new Converter<DateTime, String>() {
+            @Override
+            public String convert(MappingContext<DateTime, String> context) {
+                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
+            }
+        });
+        
+        mapper.addMappings(new PropertyMap<Article, ArticleDto>() {
+            @Override
+            protected void configure() {
+                skip().setComments(null);
+                map().setCommentCount(source.getComments().size());
+            }
+        });
+        
         Page<Article> articles = articleRepository.findByBoard(board, pageRequest);
         
-        BoardDto boardDto = modelMapper.map(board, BoardDto.class);
+        BoardDto boardDto = mapper.map(board, BoardDto.class);
 
         List<ArticleDto> articleDtoList = articles.getContent().stream()
             .map(article -> {
-                return modelMapper.map(article, ArticleDto.class);
+                return mapper.map(article, ArticleDto.class);
             })
             .collect(Collectors.toList());
         
