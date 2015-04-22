@@ -16,6 +16,7 @@ public class ArticleDto {
 	private String modifyDate;
 	private String author;
 	private String title;
+	private String text;
 	private Integer readCount;
 	
 	private List<Comment> comments;

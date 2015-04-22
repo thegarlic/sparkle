@@ -1,7 +1,5 @@
 package thegarlic.forum.controller;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,25 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import thegarlic.forum.Const;
 import thegarlic.forum.domain.Article;
-import thegarlic.forum.domain.Board;
 import thegarlic.forum.dto.ArticlePageView;
 import thegarlic.forum.dto.Response;
-import thegarlic.forum.exception.DefaultException;
-import thegarlic.forum.repository.ArticleRepository;
-import thegarlic.forum.repository.BoardRepository;
+import thegarlic.forum.dto.view.ArticleDto;
 import thegarlic.forum.service.BoardServiceImpl;
 
-@Slf4j
 @RestController
 @RequestMapping("/boards/{boardName}/articles")
 public class BoardController {
 
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
-    private BoardRepository boardRepository;
-    
     @Autowired
     private BoardServiceImpl boardService;
 
@@ -47,10 +35,8 @@ public class BoardController {
             @RequestParam(value = "sort.direction", defaultValue = "DESC") Direction sortDirection,
             @RequestParam(value = "page.size", defaultValue = Const.ELEMENT_SIZE_PER_PAGE) int pageSize) {
 
-        Board board = boardService.getBoard(boardName);
         PageRequest req = boardService.createPageReauest(pageNumber, pageSize, new Sort.Order(sortDirection, sortOrder));
-        
-        ArticlePageView articlePageView = boardService.getBoardPage(board, req);
+        ArticlePageView articlePageView = boardService.getBoardPage(boardName, req);
 
         return Response.of(articlePageView);
     }
@@ -60,23 +46,17 @@ public class BoardController {
             @PathVariable("boardName") String boardName,
             @PathVariable("articleId") Long articleId) {
 
-        Board board = getBoard(boardName);
-        Article article = getArticleWithIncreaseReadCount(articleId, board);
-
-        return Response.of(article);
+        ArticleDto articleDto = boardService.getArticleDto(boardName, articleId);
+        return Response.of(articleDto);
     }
 
     @RequestMapping(value = "/write", method = RequestMethod.POST)
-    public ResponseEntity<?> writeArticleByRequestParam(
+    public ResponseEntity<?> writeArticle(
             @PathVariable("boardName") String boardName,
             @RequestBody Article param) {
-
-        Board board = getBoard(boardName);
-        log.debug("bordName : {}, Article.title : {}, Article.text : {}, Article.author: {}", boardName, param.getTitle(), param.getText(), param.getAuthor());
-        param.setBoard(board);
-        Article article = articleRepository.save(param);
-
-        return Response.of(article, HttpStatus.CREATED);
+        
+        ArticleDto articleDto = boardService.saveArticle(boardName, param);
+        return Response.of(articleDto, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{articleId}", method = RequestMethod.PUT)
@@ -84,44 +64,8 @@ public class BoardController {
             @PathVariable("boardName") String boardName,
             @PathVariable("articleId") Long articleId,
             @RequestBody Article param) {
-
-        Board board = getBoard(boardName);
-        Article article = getArticle(articleId, board);
-
-        article.setAuthor(param.getAuthor());
-        article.setTitle(param.getTitle());
-        article.setText(param.getText());
-
-        article = articleRepository.save(article);
-
-        return Response.of(article, HttpStatus.OK);
+        
+        ArticleDto articleDto = boardService.modifyArticle(boardName, articleId, param);
+        return Response.of(articleDto, HttpStatus.OK);
     }
-
-    private Article getArticle(Long articleId, Board board) {
-        Article article = articleRepository.findByIdAndBoard(articleId, board);
-
-        if (article == null)
-            throw new DefaultException(String.format("게시글을 찾을 수 없습니다. [ID : %d]", articleId), HttpStatus.NOT_FOUND);
-
-        return article;
-    }
-
-    private Article getArticleWithIncreaseReadCount(Long articleId, Board board) {
-        Article article = this.getArticle(articleId, board);
-        article.setReadCount(article.getReadCount() + 1);
-
-        return articleRepository.save(article);
-    }
-
-    private Board getBoard(String boardName) {
-        Board board = boardRepository.findByName(boardName);
-
-        if (board == null) {
-            log.debug("{} 게시판 조회 실패! exception 발생", boardName);
-            throw new DefaultException(String.format("게시판을 찾을 수 없습니다. [boardName : %s]", boardName), HttpStatus.NOT_FOUND);
-        }
-
-        return board;
-    }
-
 }
