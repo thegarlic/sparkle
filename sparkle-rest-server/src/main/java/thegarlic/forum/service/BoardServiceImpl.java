@@ -66,16 +66,7 @@ public class BoardServiceImpl extends BaseServiceImpl {
     
     public ArticlePageView getBoardPage(String boardName, PageRequest pageRequest) {
         
-        ModelMapper mapper = new ModelMapper();
-        
-        mapper.addConverter(new Converter<DateTime, String>() {
-            @Override
-            public String convert(MappingContext<DateTime, String> context) {
-                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
-            }
-        });
-        
-        mapper.addMappings(new PropertyMap<Article, ArticleDto>() {
+        ModelMapper mapper = createMapper(new PropertyMap<Article, ArticleDto>() {
             @Override
             protected void configure() {
                 skip().setComments(null);
@@ -101,14 +92,7 @@ public class BoardServiceImpl extends BaseServiceImpl {
     
     public ArticleDto getArticleDto(String boardName, Long articleId) {
 
-        ModelMapper mapper = new ModelMapper();
-
-        mapper.addConverter(new Converter<DateTime, String>() {
-            @Override
-            public String convert(MappingContext<DateTime, String> context) {
-                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
-            }
-        });
+        ModelMapper mapper = createMapper();
 
         Board board = this.getBoard(boardName);
         Article article = this.getArticleWithIncreaseReadCount(articleId, board);
@@ -118,14 +102,7 @@ public class BoardServiceImpl extends BaseServiceImpl {
 
     public ArticleDto saveArticle(String boardName, Article param) {
 
-        ModelMapper mapper = new ModelMapper();
-
-        mapper.addConverter(new Converter<DateTime, String>() {
-            @Override
-            public String convert(MappingContext<DateTime, String> context) {
-                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
-            }
-        });
+        ModelMapper mapper = createMapper();
         
         Board board = this.getBoard(boardName);
         param.setBoard(board);
@@ -136,14 +113,7 @@ public class BoardServiceImpl extends BaseServiceImpl {
     
     public ArticleDto modifyArticle(String boardName, Long articleId, Article param) {
 
-        ModelMapper mapper = new ModelMapper();
-
-        mapper.addConverter(new Converter<DateTime, String>() {
-            @Override
-            public String convert(MappingContext<DateTime, String> context) {
-                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
-            }
-        });
+        ModelMapper mapper = createMapper();
         
         Board board = getBoard(boardName);
         Article article = getArticle(articleId, board);
@@ -155,6 +125,28 @@ public class BoardServiceImpl extends BaseServiceImpl {
         article = articleRepository.save(article);
         
         return mapper.map(article, ArticleDto.class);
+    }
+    
+    private ModelMapper createMapper() {
+        
+        ModelMapper mapper = new ModelMapper();
+        
+        mapper.addConverter(new Converter<DateTime, String>() {
+            @Override
+            public String convert(MappingContext<DateTime, String> context) {
+                return context.getSource() == null ? "" : context.getSource().withZone(DateTimeZone.UTC).toString();
+            }
+        });
+        
+        return mapper;
+    }
+    
+    private ModelMapper createMapper(PropertyMap<?, ?> map) {
+        
+        ModelMapper mapper = createMapper();
+        mapper.addMappings(map);
+        
+        return mapper;
     }
     
     
